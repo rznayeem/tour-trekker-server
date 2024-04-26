@@ -25,6 +25,22 @@ async function run() {
     await client.connect();
 
     const userCollection = client.db('tourTrekkerDB').collection('user');
+    const touristSpotCollection = client
+      .db('tourTrekkerDB')
+      .collection('touristsSpot');
+
+    app.get('/touristsSpot', async (req, res) => {
+      const cursor = touristSpotCollection.find().limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post('/touristsSpot', async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const result = await touristSpotCollection.insertOne(user);
+      res.send(result);
+    });
 
     app.post('/user', async (req, res) => {
       const user = req.body;
@@ -40,7 +56,7 @@ async function run() {
     );
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
