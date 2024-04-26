@@ -48,6 +48,13 @@ async function run() {
       res.send(result);
     });
 
+    app.delete('/allTouristsSpot/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await touristSpotCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app.post('/touristsSpot', async (req, res) => {
       const user = req.body;
       console.log(user);
@@ -62,6 +69,13 @@ async function run() {
         .toArray();
       res.send(result);
     });
+
+    // app.delete('/myList/:id', async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await touristSpotCollection.deleteOne(query);
+    //   res.send(result);
+    // });
 
     app.post('/user', async (req, res) => {
       const user = req.body;
