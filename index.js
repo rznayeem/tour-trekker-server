@@ -42,6 +42,7 @@ async function run() {
 
     app.get('/allTouristsSpot/:id', async (req, res) => {
       const id = req.params.id;
+      console.log(req.params);
       const query = { _id: new ObjectId(id) };
       const result = await touristSpotCollection.findOne(query);
       res.send(result);
@@ -54,9 +55,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/myList/:email', async (req, res) => {
+      const email = req.params.email;
+      const result = await touristSpotCollection
+        .find({ email: email })
+        .toArray();
+      res.send(result);
+    });
+
     app.post('/user', async (req, res) => {
       const user = req.body;
-      console.log(user);
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
