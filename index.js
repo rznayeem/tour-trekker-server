@@ -28,6 +28,9 @@ async function run() {
     const touristSpotCollection = client
       .db('tourTrekkerDB')
       .collection('touristsSpot');
+    const categoryCollection = client
+      .db('tourTrekkerDB')
+      .collection('category');
 
     app.get('/touristsSpot', async (req, res) => {
       const cursor = touristSpotCollection.find().limit(6);
@@ -93,6 +96,8 @@ async function run() {
       res.send(result);
     });
 
+    // user api lists
+
     app.get('/myList/:email', async (req, res) => {
       const email = req.params.email;
       const result = await touristSpotCollection
@@ -101,16 +106,15 @@ async function run() {
       res.send(result);
     });
 
-    // app.delete('/myList/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await touristSpotCollection.deleteOne(query);
-    //   res.send(result);
-    // });
-
     app.post('/user', async (req, res) => {
       const user = req.body;
       const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
+
+    app.get('/category', async (req, res) => {
+      const cursor = categoryCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
