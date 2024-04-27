@@ -39,6 +39,16 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.get('/allTouristsSpot/asc', async (req, res) => {
+      const cursor = touristSpotCollection.find().sort({ cost: 1 });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.get('/allTouristsSpot/dsc', async (req, res) => {
+      const cursor = touristSpotCollection.find().sort({ cost: -1 });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     app.get('/allTouristsSpot/:id', async (req, res) => {
       const id = req.params.id;
