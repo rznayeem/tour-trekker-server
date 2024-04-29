@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
+// app.use(cors());
 app.use(cors());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.2fh4pkj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -22,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const userCollection = client.db('tourTrekkerDB').collection('user');
     const touristSpotCollection = client
@@ -58,6 +59,15 @@ async function run() {
       console.log(req.params);
       const query = { _id: new ObjectId(id) };
       const result = await touristSpotCollection.findOne(query);
+      res.send(result);
+    });
+    app.get('/destinations/:country_name', async (req, res) => {
+      const country_name = req.params.country_name;
+      const result = await touristSpotCollection
+        .find({
+          country_name: country_name,
+        })
+        .toArray();
       res.send(result);
     });
 
@@ -103,6 +113,7 @@ async function run() {
       const result = await touristSpotCollection
         .find({ email: email })
         .toArray();
+      console.log(result);
       res.send(result);
     });
 
